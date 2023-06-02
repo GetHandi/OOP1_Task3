@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -16,6 +18,7 @@ class Time
 	void fromSeconds(int S);
 
 public:
+	
 	/// Конструктор по умолчанию
 	Time();
 
@@ -51,17 +54,17 @@ public:
 
 	/// Геттер для часов;
 	/// H - значение часов;
-	int GetH() /*const*/;
+	int GetH() const;
 
 
 	/// Геттер для минут;
 	/// M - значение минут;
-	int GetM() /*const*/;
+	int GetM() const;
 
 
 	/// Геттер для секунд;
 	/// S - значение секунд;
-	int GetS() /*const*/;
+	int GetS() const;
 
 
 	/// Метод вывода времени в консоль;
@@ -108,11 +111,29 @@ public:
 	/// Метод перевода в секунды;
 	int toSeconds();
 	
+
 	/// Метод преобразования в строку;
 	string toString();
-	
 
 
+	/// Метод записи в файл;
+	/// path - расположение текстового файла;
+	void toFile(const string& path);
+
+
+	/// Метод чтения из файла;
+	/// path - расположение текстового файла;
+	static void fromFile(const string& path);
+
+
+	/// Метод для генерации массива объектов класса;
+	/// arr - ссылка на массив, SIZE - размер массива;
+	static void TimeArr(Time * arr, int SIZE);
+
+
+	/// Метод вывода массива объектов класса в консоль;
+	/// arr - ссылка на массив, SIZE - размер массива;
+	static void TimeArrPrint(Time* arr, int SIZE);
 
 };
 	

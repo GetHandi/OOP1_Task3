@@ -1,5 +1,5 @@
-
 #include "Time.h"
+
 
 void Time::fromSeconds(int Seconds)
 {
@@ -10,10 +10,12 @@ void Time::fromSeconds(int Seconds)
 	if (Seconds < 0) { this->H *=(-1); this->M *= (-1); this->S *= (-1); }
 }
 
+
 Time::Time()
 {
 	H = M = S = 0;
 }
+
 
 Time::Time(int H, int M, int S)
 {
@@ -22,6 +24,7 @@ Time::Time(int H, int M, int S)
 	this->S = S;
 }
 
+
 void Time::SetTime(int H, int M, int S)
 {
 	this->H = H;
@@ -29,35 +32,42 @@ void Time::SetTime(int H, int M, int S)
 	this->S = S;
 }
 
+
 void Time::SetH(int H)
 {
 	this->H = H;
 }
+
 
 void Time::SetM(int M)
 {
 	this->M = M;
 }
 
+
 void Time::SetS(int S)
 {
 	this->S = S;
 }
 
-int Time::GetH()
+
+int Time::GetH() const
 {
 	return H;
 }
 
-int Time::GetM()
+
+int Time::GetM() const
 {
 	return M;
 }
 
-int Time::GetS()
+
+int Time::GetS() const
 {
 	return S;
 }
+
 
 void Time::PrintTime()
 {
@@ -67,7 +77,9 @@ void Time::PrintTime()
 	abs(M) < 10 ? cout << "0" << abs(M) : cout << abs(M);
 	cout << ":";
 	abs(S) < 10 ? cout << "0" << abs(S) : cout << abs(S);
+	cout << endl;
 }
+
 
 void Time::SumTime(int H, int M, int S)
 {
@@ -77,6 +89,7 @@ void Time::SumTime(int H, int M, int S)
 	fromSeconds(toSeconds());
 }
 
+
 void Time::DiffTime(int H, int M, int S)
 {
 	this->H -= H;
@@ -85,11 +98,13 @@ void Time::DiffTime(int H, int M, int S)
 	fromSeconds(toSeconds());
 }
 
+
 void Time::AddH(int H)
 {
 	this->H += H;
 	fromSeconds(toSeconds());
 }
+
 
 void Time::AddM(int M)
 {
@@ -97,11 +112,13 @@ void Time::AddM(int M)
 	fromSeconds(toSeconds());
 }
 
+
 void Time::AddS(int S)
 {
 	this->S += S;
 	fromSeconds(toSeconds());
 }
+
 
 double Time::toHours()
 {
@@ -113,6 +130,7 @@ double Time::toHours()
 		return Hours = double(this->H) + double(this->M) / 60 + double(this->S) / 3600;
 	}
 }
+
 
 double Time::toMinutes()
 {
@@ -137,7 +155,70 @@ int Time::toSeconds()
 	}
 }
 
+
 string Time::toString()
 {
 	return to_string(this->H) + ":" + to_string(this->M) + ":" + to_string(this->S);
 }
+
+
+void Time::toFile(const string & path )
+{
+	fstream fs;
+	//fs.exceptions(fstream::badbit | fstream::failbit);
+	try
+	{
+		fs.open(path, fstream::out | fstream::app); // запись, добавление через битовое или
+		fs << this->H << ":" << this->M << ":" << this->S << endl;
+	}
+	//catch (const ifstream::failure & ex)
+	catch (const std::exception & ex)
+	{
+		cout << ex.what() << endl;
+		//cout << ex.code() << endl;
+	}
+	fs.close();
+}
+
+
+void Time::fromFile(const string& path)
+{
+	fstream fs;
+	try
+	{
+		fs.open(path, fstream::in); //чтение
+		string str = "";
+		while (!fs.eof()) //проверяем, закончился ли файл
+		{
+			getline(fs, str);
+			cout << str << endl;
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
+	fs.close();
+}
+
+
+void Time::TimeArr(Time* arr, int SIZE)
+{
+	srand(time(NULL));
+	for (int i = 0; i < SIZE; i++)
+	{
+		arr[i] = Time(rand() % 24, rand() % 60, rand() % 60);
+	}
+		
+}
+
+
+void Time::TimeArrPrint(Time* arr, int SIZE)
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		arr[i].PrintTime();
+	}
+}
+
+
