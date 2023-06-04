@@ -19,17 +19,9 @@ Time::Time()
 
 Time::Time(int H, int M, int S)
 {
-	this->H = H;
-	this->M = M;
-	this->S = S;
-}
-
-
-void Time::SetTime(int H, int M, int S)
-{
-	this->H = H;
-	this->M = M;
-	this->S = S;
+	SetH(H);
+	SetM(M);
+	SetS(S);
 }
 
 
@@ -69,7 +61,7 @@ int Time::GetS() const
 }
 
 
-void Time::PrintTime()
+void Time::PrintTime() const
 {
 	H < 0 || M < 0 || S < 0 ? cout << "Time: -" : cout << "Time: ";
 	abs(H) < 10 ? cout << "0" << abs(H) : cout << abs(H);
@@ -122,19 +114,19 @@ void Time::AddS(int S)
 
 double Time::toHours()
 {
-	int Hours;
+	double Hours;
 	if (this->H < 0 || this->M < 0 || this->S < 0) {
-		return Hours = (-1) * (abs(double(this->H)) + abs(double(this->M)/60) + abs(double(this->S)/3600));
+		return Hours = (-1.0) * (abs(double(this->H)) + abs(double(this->M)/60) + abs(double(this->S)/3600));
 	}
 	else {
-		return Hours = double(this->H) + double(this->M) / 60 + double(this->S) / 3600;
+		return Hours = this->H + (double)this->M / 60.0 + (double)this->S / 3600.0;
 	}
 }
 
 
 double Time::toMinutes()
 {
-	int Minutes;
+	double Minutes;
 	if (this->H < 0 || this->M < 0 || this->S < 0) {
 		return Minutes = (-1) * (abs(double(this->H) * 60) + abs(double(this->M)) + abs(double(this->S) / 60));
 	}
@@ -192,6 +184,15 @@ void Time::fromFile(const string& path)
 		{
 			getline(fs, str);
 			cout << str << endl;
+			if (str != "")
+			{
+				int index_sep1 = str.find(':');
+				int index_sep2 = str.find(':', index_sep1+1);
+				this->H = stoi(str.substr(0, index_sep1));
+				this->M = stoi(str.substr(index_sep1, index_sep2));
+				this->S = stoi(str.substr(index_sep2, '\n'));
+
+			}
 		}
 	}
 	catch (const std::exception& ex)
